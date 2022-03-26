@@ -122,6 +122,7 @@ template <typename CMType>
 void automl<CMType>::one_step(multi_learner& base, multi_ex& ec, CB::cb_class& logged, uint64_t labelled_action)
 {
   cm->total_learn_count++;
+  int tem = 0;
   switch (current_state)
   {
     case VW::automl::automl_state::Collecting:
@@ -135,7 +136,11 @@ void automl<CMType>::one_step(multi_learner& base, multi_ex& ec, CB::cb_class& l
       cm->pre_process(ec);
       cm->schedule();
       offset_learn(base, ec, logged, labelled_action);
+      tem = cm->total_champ_switches;
       cm->update_champ();
+      if(cm->total_champ_switches - tem && cm->first_champ_switch==-1){
+        cm->first_champ_switch = (int64_t) cm->total_learn_count++; 
+      }
       break;
 
     default:

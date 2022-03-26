@@ -6,5 +6,10 @@
             ],
             "url": "./test/vwtest.schema.json"
         }
-    ]
+    ],
+    "files.associations": {
+        "variant": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp"
+    }
 }

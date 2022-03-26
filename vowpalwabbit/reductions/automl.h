@@ -100,6 +100,7 @@ using priority_func = float(const exclusion_config&, const std::map<namespace_in
 struct interaction_config_manager : config_manager
 {
   uint64_t total_champ_switches = 0;
+  int64_t first_champ_switch = -1;
   uint64_t total_learn_count = 0;
   uint64_t current_champ = 0;
   uint64_t global_lease;

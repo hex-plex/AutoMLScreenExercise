@@ -77,8 +77,9 @@ VW::automl::automl<interaction_config_manager>* get_automl_data(VW::workspace& a
 BOOST_AUTO_TEST_CASE(automl_first_champ_switch)
 {
   const size_t num_iterations = 1331;
-  const size_t seed = 10;
-  const size_t deterministic_champ_switch = 161;
+  const size_t seed = 11;
+  const size_t deterministic_champ_switch = 114;
+  const size_t check_example = 200;
   callback_map test_hooks;
 
   test_hooks.emplace(deterministic_champ_switch - 1, [&](cb_sim&, VW::workspace& all, multi_ex&) {
@@ -102,10 +103,16 @@ BOOST_AUTO_TEST_CASE(automl_first_champ_switch)
     BOOST_CHECK(aml->current_state == VW::automl::automl_state::Experimenting);
     return true;
   });
+  
+  test_hooks.emplace(check_example, [&check_example](cb_sim&, VW::workspace& all, multi_ex&) {
+    VW::automl::automl<interaction_config_manager>* aml = aml_test::get_automl_data(all);
+    *(all.trace_message) << "The first change happended here: " << aml->cm->first_champ_switch << " num "<<aml->cm->total_champ_switches<<"\n";
+    return true;
+  });
 
   // we initialize the reduction pointing to position 0 as champ, that config is hard-coded to empty
   auto ctr = simulator::_test_helper_hook(
-      "--automl 3 --priority_type least_exclusion --cb_explore_adf --quiet --epsilon 0.2 --random_seed 5 "
+      "--automl 3 --priority_type least_exclusion --cb_explore_adf --epsilon 0.2 --random_seed 5 "
       "--keep_configs --oracle_type rand",
       test_hooks, num_iterations, seed);
 
