@@ -1,4 +1,6 @@
-# Screening Exercise: AutoML RLOS 2022
+# Screening Exercise Submission: AutoML RLOS 2022
+
+<img src="/logo_assets/vowpal-wabbits-github-logo@3x.png" height="auto" width="100%" alt="Vowpal Wabbit">
 
 The readme describes the changes I did to complete the Screening exercise. And the repository contains the forked Vowpal Wabbit repository modified and the added snippets of code. The structure of the remainder of the README is as follows
 
@@ -16,7 +18,7 @@ The screen exercise can be found [here](https://vowpalwabbit.org/rlos/2022/proje
 
 ## Answer
 
-The answer is <h3>**114**</h3> . At iteration number 114 the champ switches for the first with seed 11. 
+<h3>The answer is 114.</h3> At iteration number 114 the champ switches for the first with seed 11. 
 
 
 ## My Approach
