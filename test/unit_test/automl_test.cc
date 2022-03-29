@@ -116,11 +116,11 @@ BOOST_AUTO_TEST_CASE(automl_first_champ_switch)
     return true;
   });
   
-  // test_hooks.emplace(check_example, [&check_example](cb_sim&, VW::workspace& all, multi_ex&) {
-  //   VW::automl::automl<interaction_config_manager>* aml = aml_test::get_automl_data(all);
-  //   *(all.trace_message) << "First Champ switch happended here: " << aml->cm->first_champ_switch << " num "<<aml->cm->total_champ_switches<<"\n";
-  //   return true;
-  // });
+  test_hooks.emplace(check_example, [&check_example](cb_sim&, VW::workspace& all, multi_ex&) {
+    VW::automl::automl<interaction_config_manager>* aml = aml_test::get_automl_data(all);
+    *(all.trace_message) << "First Champ switch happended here: " << aml->cm->first_champ_switch <<"\n";
+    return true;
+  });
 
   // we initialize the reduction pointing to position 0 as champ, that config is hard-coded to empty
   auto ctr = simulator::_test_helper_hook(
