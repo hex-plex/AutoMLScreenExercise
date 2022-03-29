@@ -82,6 +82,18 @@ BOOST_AUTO_TEST_CASE(automl_first_champ_switch)
   const size_t check_example = 200;
   callback_map test_hooks;
 
+  const size_t max_check = 250;
+  bool check_switch = false;
+  for(size_t inst=0; inst<max_check; inst++){
+    test_hooks.emplace(std::make_pair( inst, [inst, &check_switch](cb_sim&, VW::workspace& all, multi_ex&) {
+      VW::automl::automl<interaction_config_manager>* aml = aml_test::get_automl_data(all);
+      std::string msg = "First Champ switch Occured at: " + std::to_string((int) inst);
+      BOOST_CHECK_MESSAGE(aml->cm->total_champ_switches!=1 || check_switch, msg);
+      check_switch |= aml->cm->total_champ_switches==1;
+      return true;
+    }));
+  }
+  
   test_hooks.emplace(deterministic_champ_switch - 1, [&](cb_sim&, VW::workspace& all, multi_ex&) {
     VW::automl::automl<interaction_config_manager>* aml = aml_test::get_automl_data(all);
     aml_test::check_interactions_match_exclusions(aml);
@@ -104,11 +116,11 @@ BOOST_AUTO_TEST_CASE(automl_first_champ_switch)
     return true;
   });
   
-  test_hooks.emplace(check_example, [&check_example](cb_sim&, VW::workspace& all, multi_ex&) {
-    VW::automl::automl<interaction_config_manager>* aml = aml_test::get_automl_data(all);
-    *(all.trace_message) << "The first change happended here: " << aml->cm->first_champ_switch << " num "<<aml->cm->total_champ_switches<<"\n";
-    return true;
-  });
+  // test_hooks.emplace(check_example, [&check_example](cb_sim&, VW::workspace& all, multi_ex&) {
+  //   VW::automl::automl<interaction_config_manager>* aml = aml_test::get_automl_data(all);
+  //   *(all.trace_message) << "First Champ switch happended here: " << aml->cm->first_champ_switch << " num "<<aml->cm->total_champ_switches<<"\n";
+  //   return true;
+  // });
 
   // we initialize the reduction pointing to position 0 as champ, that config is hard-coded to empty
   auto ctr = simulator::_test_helper_hook(
